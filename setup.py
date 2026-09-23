@@ -19,6 +19,7 @@ Run this once to create an account, then run main.py to log in.
 
 import sqlite3
 import getpass
+import sys
 
 import bcrypt
 import pyotp
@@ -33,17 +34,23 @@ DB_FILE = "auth_demo.db"
 TOTP_SECRET = "JBSWY3DPEHPK3PXP"
 
 
+def validate(password: str) -> bool:
+    """
+    TODO: validate the password.
+    """
+
+    return True
+
+
 def create_table(conn):
     """Create the 'user' table if it doesn't already exist."""
-    conn.execute(
-        """
+    conn.execute("""
         CREATE TABLE IF NOT EXISTS user (
             username TEXT PRIMARY KEY,
             password TEXT NOT NULL,
             salt TEXT NOT NULL
         )
-        """
-    )
+        """)
     conn.commit()
 
 
@@ -99,6 +106,9 @@ def main():
     # screen like input() would.
     password = getpass.getpass("Choose a password: ")
 
+    if not validate(password):
+        sys.exit(1)
+
     conn = sqlite3.connect(DB_FILE)
     create_table(conn)
 
@@ -111,8 +121,10 @@ def main():
     print(f"Stored salt:        {salt}")
 
     qr_file = generate_qr_code(username)
-    print(f"\nScan '{qr_file}' with an authenticator app (e.g. Google "
-          f"Authenticator) to enable TOTP 2FA.")
+    print(
+        f"\nScan '{qr_file}' with an authenticator app (e.g. Google "
+        f"Authenticator) to enable TOTP 2FA."
+    )
     print(f"(For testing without a phone, the secret is: {TOTP_SECRET})")
     print("\nSetup complete! Run main.py to log in.")
 

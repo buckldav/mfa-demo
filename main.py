@@ -64,8 +64,10 @@ def authenticate_password(conn) -> str | None:
 
         remaining = MAX_ATTEMPTS - attempt
         if remaining > 0:
-            print(f"Incorrect username or password. "
-                  f"{remaining} attempt(s) remaining.\n")
+            print(
+                f"Incorrect username or password. "
+                f"{remaining} attempt(s) remaining.\n"
+            )
 
     return None
 
