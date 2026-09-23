@@ -47,3 +47,4 @@ python main.py
 - Storing credentials in a SQLite database
 - Two-factor authentication (2FA) with TOTP
 - QR codes as a way to transmit a secret key
+
